@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengfei.vue.mapper.IMaterialDataMapper" >
+    <resultMap id="BaseResultMap" type="com.pengfei.model.material.MaterialData" >
+        <id column="material_data_id" property="materialDataId" jdbcType="VARCHAR" />
+        <result column="material_type_id" property="materialTypeId" jdbcType="VARCHAR" javaType="string"/>
+        <result column="data_json" property="dataJson" jdbcType="VARCHAR" javaType="string"/>
+        <result column="status" property="status" jdbcType="INTEGER" javaType="int"/>
+        <result column="ix" property="ix" jdbcType="INTEGER" javaType="int"/>
+        <result column="material_code" property="materialCode" jdbcType="VARCHAR" javaType="string"/>
+        <result column="project_code" property="projectCode" jdbcType="VARCHAR" javaType="string"/>
+        <result column="ordering_code" property="orderingCode" jdbcType="VARCHAR" javaType="string"/>
+        <result column="mfr_name" property="mfrName" jdbcType="VARCHAR" javaType="string"/>
+        <result column="specification" property="specification" jdbcType="VARCHAR" javaType="string"/>
+        <result column="is_build" property="isBuild" jdbcType="INTEGER" javaType="int"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR" javaType="string"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" javaType="date"/>
+        <result column="updater" property="updater" jdbcType="VARCHAR" javaType="string"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" javaType="date"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        material_data_id,material_type_id,data_json,status,
+        ix,material_code,project_code,ordering_code,mfr_name,specification,is_build,
+        creator,create_date,updater,update_date
+    </sql>
+
+    <insert id="add" parameterType="com.pengfei.model.material.MaterialData">
+        INSERT INTO
+        Material_Data
+        (material_data_id, material_type_id, data_json,status,
+        ix,material_code,project_code,ordering_code,mfr_name,specification,is_build,
+        creator,create_date)
+        VALUES
+        (#{materialDataId},#{materialTypeId},#{dataJson},#{status},
+        #{ix},#{materialCode},#{projectCode},#{orderingCode},#{mfrName},#{specification},#{isBuild},
+        #{creator},GETDATE())
+    </insert>
+
+    <update id="update" parameterType="com.pengfei.model.material.MaterialData">
+        UPDATE
+        Material_Data
+        SET
+        material_type_id = #{materialTypeId},
+        data_json = #{dataJson},
+        status = #{status},
+        ix = #{ix},
+        material_code = #{materialCode},
+        project_code = #{projectCode},
+        ordering_code = #{orderingCode},
+        mfr_name = #{mfrName},
+        specification = #{specification},
+        is_build = #{isBuild},
+        updater = #{updater},
+        update_date = GETDATE()
+        WHERE
+        material_data_id = #{materialDataId}
+    </update>
+
+    <delete id="delete" parameterType="com.pengfei.model.material.MaterialData">
+        DELETE FROM Material_Data WHERE material_data_id = #{materialDataId}
+    </delete>
+
+    <delete id="delteByMaterialType" parameterType="string">
+        DELETE FROM Material_Data WHERE  material_type_id = #{materialTypeId}
+    </delete>
+
+    <select id="count" parameterType="com.pengfei.model.material.MaterialData"  resultType="long">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Material_Data
+        <where>
+            <if test="materialTypeId != null and materialTypeId != ''">
+                AND material_type_id = #{materialTypeId}
+            </if>
+        </where>
+    </select>
+
+    <select id="query" parameterType="com.pengfei.model.material.MaterialData" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Material_Data
+    </select>
+
+    <select id="queryList" parameterType="com.pengfei.model.material.MaterialData" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Material_Data
+        <where>
+            <if test="materialTypeList != null and materialTypeList.size > 0">
+                AND material_type_id IN
+                <foreach collection="materialTypeList" index="materialType" item="materialType" open="(" separator="," close=")">
+                    #{materialType.materialTypeId}
+                </foreach>
+            </if>
+            <if test="materialTypeId != null and materialTypeId != ''">
+                AND material_type_id = #{materialTypeId}
+            </if>
+        </where>
+    </select>
+</mapper>

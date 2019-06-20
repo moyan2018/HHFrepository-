@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-api/pengfei-api-vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-app" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-app/pengfei-app-vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-base" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-framework" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-model" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-model/pengfei-model-vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-server/pengfei-server-vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pengfei-utils" charset="UTF-8" />
+  </component>
+</project>

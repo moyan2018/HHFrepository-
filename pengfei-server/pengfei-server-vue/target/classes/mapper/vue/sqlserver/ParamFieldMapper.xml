@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengfei.vue.mapper.IParamFieldMapper" >
+    <resultMap id="BaseResultMap" type="com.pengfei.model.material.ParamField" >
+        <id column="param_field_id" property="paramFieldId" jdbcType="VARCHAR" />
+        <result column="material_type_id" property="materialTypeId" jdbcType="VARCHAR" javaType="string"/>
+        <result column="param_field_code" property="paramFieldCode" jdbcType="VARCHAR" javaType="string"/>
+        <result column="param_field_name" property="paramFieldName" jdbcType="VARCHAR" javaType="string"/>
+        <result column="param_field_desc" property="paramFieldDesc" jdbcType="VARCHAR" javaType="string"/>
+        <result column="is_require" property="isRequire" jdbcType="INTEGER" javaType="int"/>
+        <result column="status" property="status" jdbcType="INTEGER" javaType="int"/>
+        <result column="param_data_type" property="paramDataType" jdbcType="VARCHAR" javaType="string"/>
+        <result column="param_prefix_enums" property="paramPrefixEnums" jdbcType="VARCHAR" javaType="string"/>
+        <result column="param_suffix_enums" property="paramSuffixEnums" jdbcType="VARCHAR" javaType="string"/>
+        <result column="ix" property="ix" jdbcType="INTEGER" javaType="int"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR" javaType="string"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" javaType="date"/>
+        <result column="updater" property="updater" jdbcType="VARCHAR" javaType="string"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" javaType="date"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        param_field_id,material_type_id,param_field_code,param_field_name,param_field_desc,is_require,status,param_data_type,param_prefix_enums,param_suffix_enums,ix,
+        creator,create_date,updater,update_date
+    </sql>
+
+    <insert id="add" parameterType="com.pengfei.model.material.ParamField">
+        INSERT INTO
+        Param_Field
+        (param_field_id, param_field_code,material_type_id,param_field_name,param_field_desc,is_require,status,param_data_type,param_prefix_enums,param_suffix_enums,ix,
+        creator,create_date)
+        VALUES
+        (#{paramFieldId},#{paramFieldCode},#{materialTypeId},#{paramFieldName},#{paramFieldDesc},#{isRequire},#{status},#{paramDataType},#{paramPrefixEnums},#{paramSuffixEnums},#{ix},
+        #{creator}, GETDATE())
+    </insert>
+
+    <update id="update" parameterType="com.pengfei.model.material.ParamField">
+        UPDATE
+        Param_Field
+        SET
+        <if test="materialTypeId != null and materialTypeId != null">
+            material_type_id = #{materialTypeId},
+        </if>
+        param_field_code = #{paramFieldCode},
+        param_field_name = #{paramFieldName},
+        param_field_desc = #{paramFieldDesc},
+        is_require = #{isRequire},
+        status = #{status},
+        param_data_type = #{paramDataType},
+        param_prefix_enums = #{paramPrefixEnums},
+        param_suffix_enums = #{paramSuffixEnums},
+        ix = #{ix},
+        updater = #{updater},
+        update_date = GETDATE()
+        WHERE
+        param_field_id = #{paramFieldId}
+    </update>
+
+    <delete id="delete" parameterType="com.pengfei.model.material.ParamField">
+        DELETE FROM Param_Field where param_field_id = #{paramFieldId}
+    </delete>
+
+    <delete id="deleteByMaterialType" parameterType="string">
+        DELETE FROM Param_Field where material_type_id = #{materialTypeId}
+    </delete>
+
+    <select id="count" parameterType="com.pengfei.model.material.ParamField"  resultType="long">
+        SELECT COUNT(param_field_id) FROM Param_Field
+        <where>
+            <if test="materialTypeId != null and materialTypeId != ''">
+                AND material_type_id = #{materialTypeId}
+            </if>
+            <if test="paramFieldCode != null and paramFieldCode != ''">
+                AND param_field_code = #{paramFieldCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="query" parameterType="com.pengfei.model.material.ParamField" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Param_Field
+        <where>
+            <if test="paramFieldId != null and paramFieldId != null">
+               AND param_field_id = #{paramFieldId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryList" parameterType="com.pengfei.model.material.ParamField" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Param_Field
+        <where>
+            <if test="materialTypeList != null and materialTypeList.size > 0">
+                AND material_type_id IN
+                <foreach collection="materialTypeList" index="index" item="materialType" open="(" separator="," close=")">
+                    #{materialType.materialTypeId}
+                </foreach>
+            </if>
+            <if test="paramFieldCode != null and paramFieldCode != ''">
+                AND param_field_code = #{paramFieldCode}
+            </if>
+        </where>
+        ORDER BY ix
+    </select>
+</mapper>

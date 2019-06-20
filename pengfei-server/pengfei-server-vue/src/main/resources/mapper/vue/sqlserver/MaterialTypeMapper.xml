@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengfei.vue.mapper.IMaterialTypeMapper" >
+    <resultMap id="BaseResultMap" type="com.pengfei.model.material.MaterialType" >
+        <id column="material_type_id" property="materialTypeId" jdbcType="VARCHAR" javaType="string"/>
+        <result column="material_type_name" property="materialTypeName" jdbcType="VARCHAR" javaType="string"/>
+        <result column="material_type_code" property="materialTypeCode" jdbcType="VARCHAR" javaType="string"/>
+        <result column="status" property="status" jdbcType="INTEGER" javaType="int"/>
+        <result column="super_material_type_id" property="superMaterialTypeId" jdbcType="VARCHAR" javaType="string"/>
+        <result column="can_data" property="canData" jdbcType="INTEGER" javaType="int"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR" javaType="int"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" javaType="date"/>
+        <result column="updater" property="updater" jdbcType="VARCHAR" javaType="string"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" javaType="date"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        material_type_id,material_type_name,material_type_code,status,super_material_type_id,can_data,
+        creator,create_date,updater,update_date
+    </sql>
+
+    <insert id="add" parameterType="com.pengfei.model.material.MaterialType">
+        INSERT INTO
+        Material_Type
+        (material_type_id,material_type_name,material_type_code,status,super_material_type_id,can_data,creator,create_date)
+        VALUES
+        (#{materialTypeId},#{materialTypeName},#{materialTypeCode},#{status},#{superMaterialTypeId},#{canData},#{creator},GETDATE())
+    </insert>
+
+    <update id="update" parameterType="com.pengfei.model.material.MaterialType">
+        UPDATE
+        Material_Type
+        SET
+        material_type_name = #{materialTypeName},
+        material_type_code = #{materialTypeCode},
+        status = #{status},
+        super_material_type_id = #{superMaterialTypeId},
+        can_data = #{canData},
+        updater = #{updater},
+        update_date = GETDATE()
+        WHERE
+        material_type_id = #{materialTypeId}
+    </update>
+
+    <delete id="delete" parameterType="com.pengfei.model.material.MaterialType">
+        DELETE FROM
+        Material_Type
+        WHERE
+        material_type_id = #{materialTypeId}
+    </delete>
+
+    <select id="count" parameterType="com.pengfei.model.material.MaterialType"  resultType="long">
+        SELECT COUNT(material_type_id) FROM Material_Type
+        <where>
+            <if test="superMaterialTypeId != null and superMaterialTypeId != ''">
+                AND  super_material_type_id = #{superMaterialTypeId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByMaterialTypeCodeAndName" parameterType="string" resultType="long">
+        SELECT COUNT(material_type_id) FROM Material_Type
+        <where>
+            <if test="materialTypeCode != null and materialTypeCode != ''">
+                AND material_type_code = #{materialTypeCode} OR material_type_name = #{materialTypeName}
+            </if>
+            <if test="materialTypeCode == null or materialTypeCode == ''">
+                AND material_type_name = #{materialTypeName}
+            </if>
+        </where>
+    </select>
+
+    <select id="query" parameterType="com.pengfei.model.material.MaterialType" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Material_Type
+        <where>
+            <if test="materialTypeId != null and materialTypeId != ''">
+               AND material_type_id = #{materialTypeId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryList" parameterType="com.pengfei.model.material.MaterialType" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Material_Type
+        <where>
+            <if test="superMaterialTypeId != null and superMaterialTypeId != ''">
+                AND super_material_type_id = #{superMaterialTypeId}
+            </if>
+            <if test="materialTypeName != null and materialTypeName != ''">
+                AND material_type_name = #{materialTypeName}
+            </if>
+            <if test="materialTypeCode != null and materialTypeCode != ''">
+                AND material_type_code = #{materialTypeCode}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
+</mapper>
