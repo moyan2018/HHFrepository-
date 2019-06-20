@@ -19,6 +19,7 @@ public class PfkjDataFaceImpl implements IPfkjDataFace {
 
     @Override
     public Pager<ParamField> getPagerParamField(String materialTypeId, int pageNum, int pageSize) throws Exception {
+
         //1.根据materialTypeId查询参数字段
         ParamField temp = new ParamField();
         if(EmptyUtils.isNotEmpty(materialTypeId)){
